@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkiFy | Exclusive Offer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo"><img src="images/logoBlack.png" alt="Workify Logo"></div>
+  <p class="logoh1">WorkiFy</p>
+  <nav class="nav-links">
+    <a href="index.html"><button class="tasker-btn">Home</button></a>
+    <button class="contact-button" style="background:#e53935" onclick="doLogout()">Log Out</button>
+  </nav>
+</header>
+
+<div id="offerContent" class="offer-page" style="display:none;">
+  <h1 style="color:#0097a7; margin-bottom:10px;">Welcome, <span id="uname"></span> 🎉</h1>
+  <div class="offer-box">
+    <h2>🎁 Exclusive Offer Just for You!</h2>
+    <div class="offer-code">WORKIFY10</div>
+    <p>As a valued member, you get <strong>10% OFF</strong> your total booking payment.</p>
+    <p style="margin-top:10px; font-size:.9rem; color:#888;">Enter this code in the booking form to apply your discount.</p>
+    <br>
+    <button class="tasker-btn" style="margin-top:10px;" onclick="window.location.href='booking.html'">Book Now</button>
+    <button class="tasker-btn" style="background:#555; margin-top:10px;" onclick="window.location.href='index.html'">Go to Homepage</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script>
+(async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    window.location.href = 'login.html'; return;
+  }
+  const name = user.user_metadata?.username || user.email;
+  document.getElementById('uname').textContent = name;
+  document.getElementById('offerContent').style.display = 'flex';
+})();
+
+async function doLogout() {
+  await supabase.auth.signOut();
+  window.location.href = 'index.html';
+}
+</script>
+</body>
+</html>

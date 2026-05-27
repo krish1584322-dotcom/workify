@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | WorkiFy</title>
+  <style>
+    body { font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background: #f7fafb; color: #333; }
+    header { background: linear-gradient(90deg,#00b3b3,#00d1d1); color:#fff; text-align:center; padding:25px 0 15px; box-shadow:0 4px 12px rgba(0,0,0,.1); }
+    header .logo img { width:120px; height:auto; margin-bottom:8px; }
+    nav ul { list-style:none; padding:0; margin:10px 0 0; }
+    nav ul li { display:inline-block; margin:0 18px; }
+    nav ul li a { color:#fff; text-decoration:none; font-weight:500; transition:color .3s,border-bottom .3s; }
+    nav ul li a:hover { color:#fffa; border-bottom:2px solid #fff; }
+    .about-section { max-width:1100px; margin:60px auto; background:#fff; padding:50px; border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,.08); animation:fadeIn 1s ease-in-out; }
+    .about-section h2 { color:#007c7c; border-left:6px solid #00c2cb; padding-left:15px; margin-bottom:20px; font-size:1.8em; }
+    .about-section p { line-height:1.8; margin-top:15px; color:#444; font-size:1.05em; }
+    .highlight { color:#00b3b3; font-weight:bold; }
+    .gallery-section { max-width:1250px; margin:70px auto; text-align:center; padding:0 20px; }
+    .gallery-section h2 { color:#007c7c; font-size:1.8em; margin-bottom:40px; position:relative; display:inline-block; }
+    .gallery-section h2::after { content:''; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); width:60px; height:3px; background:#00c2cb; border-radius:2px; }
+    .gallery-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(350px,1fr)); gap:30px; justify-items:center; }
+    .gallery-card { background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,.08); transition:transform .4s,box-shadow .4s; max-width:550px; height:480px; display:flex; flex-direction:column; }
+    .gallery-card:hover { transform:translateY(-10px) scale(1.03); box-shadow:0 14px 28px rgba(0,0,0,.12); }
+    .gallery-card img { width:100%; height:320px; object-fit:cover; transition:transform .5s; }
+    .gallery-card:hover img { transform:scale(1.08); }
+    .caption { padding:20px; text-align:left; font-size:.97em; color:#555; line-height:1.6; flex-grow:1; display:flex; flex-direction:column; justify-content:center; }
+    .caption strong { color:#007c7c; display:block; margin-bottom:6px; font-size:1.05em; }
+    footer { background:#1e1e2f; color:#fff; text-align:center; padding:20px 0; font-size:.95em; margin-top:70px; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @media(max-width:768px) { .about-section{padding:30px} .gallery-card{height:auto} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><img src="images/logoBlack.png" alt="Workify Logo"></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html">Services</a></li>
+        <li><a href="booking.html">Book Now</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="help.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="about-section">
+    <h2>About WorkiFy</h2>
+    <p>Welcome to <span class="highlight">WorkiFy</span> — your trusted partner for all home and office services. We connect customers with skilled professionals to help with cleaning, repairs, moving, painting, and many more essential tasks.</p>
+    <p>Our mission is to simplify your life by offering verified experts who bring quality, reliability, and peace of mind right to your doorstep. Whether it's urgent maintenance or a planned renovation, <span class="highlight">WorkiFy</span> ensures top-tier results every time.</p>
+    <p>With a strong commitment to <span class="highlight">transparency, safety, and customer satisfaction</span>, we aim to make every service experience smooth and enjoyable for our valued customers.</p>
+    <p>Trusted by thousands of households and businesses, <span class="highlight">WorkiFy</span> continues to redefine convenience and quality. Your comfort is our responsibility — that's the WorkiFy promise.</p>
+  </section>
+
+  <section class="gallery-section">
+    <h2>Our Work in Action</h2>
+    <div class="gallery-grid">
+      <div class="gallery-card"><img src="images/outDoor3.JPG" alt="Outdoor Assembly"><div class="caption"><strong>Outdoor Assembly Services</strong>Expert assembly of garden sets, gazebos, and playground equipment with precision and care.</div></div>
+      <div class="gallery-card"><img src="images/lifting4.JPG" alt="Heavy Lifting"><div class="caption"><strong>Heavy Lifting & Moving</strong>Trained professionals handle bulky items and heavy furniture effortlessly.</div></div>
+      <div class="gallery-card"><img src="images/furniture3.JPG" alt="Furniture Assembly"><div class="caption"><strong>Furniture Assembly</strong>From stylish wardrobes to modular desks — assembled flawlessly.</div></div>
+      <div class="gallery-card"><img src="images/painterGrp.JPG" alt="Painting"><div class="caption"><strong>Painting Projects</strong>Skilled painters add life to your walls with fresh colors and perfect finishes.</div></div>
+      <div class="gallery-card"><img src="images/lifting.JPG" alt="Item Relocation"><div class="caption"><strong>Item Relocation</strong>End-to-end relocation solutions — careful packing to professional delivery.</div></div>
+      <div class="gallery-card"><img src="images/grpWorker.JPG" alt="Team Support"><div class="caption"><strong>Team Support Services</strong>A coordinated team of professionals delivering quality service.</div></div>
+    </div>
+  </section>
+
+  <footer>&copy; 2025 WorkiFy. All Rights Reserved.</footer>
+</body>
+</html>

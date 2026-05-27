@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkiFy | Book a Service</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,.42),rgba(0,0,0,.42)),
+                  url('images/bookwithpen.jpg') center/cover no-repeat fixed;
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo"><img src="images/logoBlack.png" alt="Workify Logo"></div>
+  <p class="logoh1">WorkiFy</p>
+  <nav class="nav-links">
+    <div class="dropdown">
+      <button class="dropbtn">Services ▾</button>
+      <div class="dropdown-content">
+        <a href="booking.html?cat=assembly">Assembly</a>
+        <a href="booking.html?cat=cleaning">Cleaning</a>
+        <a href="booking.html?cat=moving">Moving</a>
+        <a href="booking.html?cat=mounting">Mounting</a>
+        <a href="booking.html?cat=Outdoor Help">Outdoor Help</a>
+        <a href="booking.html?cat=Home Repairs">Home Repairs</a>
+        <a href="booking.html?cat=painting">Painting</a>
+      </div>
+    </div>
+    <a href="index.html">Home</a>
+    <a href="login.html">Sign Up / Log In</a>
+    <a href="about.html">About Us</a>
+    <a href="help.html">Help</a>
+  </nav>
+</header>
+
+<div class="recruitment-container">
+  <h2>Booking Form</h2>
+
+  <div class="input-group">
+    <label>Full Name</label>
+    <input type="text" id="name" placeholder="Enter your full name">
+  </div>
+  <div class="input-group">
+    <label>Address</label>
+    <input type="text" id="address" placeholder="Enter your address">
+  </div>
+  <div class="input-group">
+    <label>Main Category</label>
+    <select id="mainCategory">
+      <option value="">-- Select Main Category --</option>
+      <option value="assembly">Assembly</option>
+      <option value="cleaning">Cleaning</option>
+      <option value="moving">Moving</option>
+      <option value="mounting">Mounting</option>
+      <option value="Outdoor Help">Outdoor Help</option>
+      <option value="Home Repairs">Home Repairs</option>
+      <option value="painting">Painting</option>
+    </select>
+  </div>
+  <div class="input-group">
+    <label>Sub Service</label>
+    <select id="subService">
+      <option value="">-- Select Sub Service --</option>
+    </select>
+  </div>
+  <div class="input-group">
+    <label>Number of Working Hours</label>
+    <input type="number" id="hours" placeholder="Enter number of hours" min="1">
+  </div>
+  <div class="input-group">
+    <label>Number of Workers</label>
+    <input type="number" id="workers" placeholder="Enter number of workers" min="1">
+  </div>
+  <div class="input-group">
+    <label>Date</label>
+    <input type="date" id="date">
+  </div>
+  <div class="input-group">
+    <label>Phone Number</label>
+    <input type="tel" id="phone" placeholder="Enter phone number">
+  </div>
+  <div class="input-group">
+    <label>Offer Code (Optional)</label>
+    <input type="text" id="offer" placeholder="Enter offer code if any">
+  </div>
+  <div class="input-group">
+    <label>Additional Details</label>
+    <textarea id="details" rows="3" placeholder="Optional: provide more info"></textarea>
+  </div>
+
+  <button class="btn-book" onclick="submitBooking()">Submit Booking</button>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script>
+// Sub-service options per category
+const subServices = {
+  'assembly':     ['General Furniture Assembly','Bookshelf Assembly','Desk Assembly'],
+  'cleaning':     ['Home Cleaning','Apartment Cleaning','Deep Clean','Garage Cleaning'],
+  'moving':       ['Home Moving','Office Moving','Packing Help','Heavy Lifting'],
+  'mounting':     ['Hang Art, Mirror & Decor','TV Mounting','Mount & Anchor Furniture'],
+  'Outdoor Help': ['Yard Work','Leaf Raking & Removal','Landscaping'],
+  'Home Repairs': ['Flooring & Tiling Help','Sealing & Caulking','Electrical Help','Plumbing Help'],
+  'painting':     ['Indoor Painting','Wallpapering','Outdoor Painting']
+};
+
+// Service rates (Rs. per hour)
+const serviceRates = {
+  'assembly': 300, 'cleaning': 350, 'moving': 400,
+  'mounting': 350, 'Outdoor Help': 300, 'Home Repairs': 450, 'painting': 300
+};
+
+// Pre-fill from URL params
+const params = new URLSearchParams(window.location.search);
+const precat = params.get('cat');
+const presub = params.get('sub');
+const mainSel = document.getElementById('mainCategory');
+const subSel  = document.getElementById('subService');
+
+if (precat) {
+  mainSel.value = precat;
+  populateSubs(precat, presub);
+}
+
+mainSel.addEventListener('change', () => populateSubs(mainSel.value, null));
+
+function populateSubs(cat, defaultSub) {
+  subSel.innerHTML = '<option value="">-- Select Sub Service --</option>';
+  (subServices[cat] || []).forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    if (s === defaultSub) opt.selected = true;
+    subSel.appendChild(opt);
+  });
+}
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+async function submitBooking() {
+  const name    = document.getElementById('name').value.trim();
+  const address = document.getElementById('address').value.trim();
+  const cat     = mainSel.value;
+  const sub     = subSel.value;
+  const hours   = parseInt(document.getElementById('hours').value);
+  const workers = parseInt(document.getElementById('workers').value);
+  const date    = document.getElementById('date').value;
+  const phone   = document.getElementById('phone').value.trim();
+  const offer   = document.getElementById('offer').value.trim();
+  const details = document.getElementById('details').value.trim();
+
+  if (!name || !address || !cat || !sub || !hours || !workers || !date || !phone) {
+    showToast('Please fill all required fields.', 'error'); return;
+  }
+
+  // Calculate price with optional 10% discount
+  let rate = serviceRates[cat] || 300;
+  let total = rate * hours * workers;
+  if (offer.toUpperCase() === 'WORKIFY10') total = total * 0.9;
+
+  const { error } = await supabase.from('bookings').insert([{
+    name, address, main_category: cat, sub_service: sub,
+    hours, workers, date, phone, offer_code: offer,
+    details, total_price: Math.round(total)
+  }]);
+
+  if (error) { showToast('Booking failed. Please try again.', 'error'); console.error(error); return; }
+  showToast(`Booking submitted! Estimated cost: Rs.${Math.round(total)} ✅`);
+  setTimeout(() => window.location.href = 'index.html', 2800);
+}
+</script>
+</body>
+</html>

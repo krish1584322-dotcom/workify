@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkiFy | Home</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ── Navbar ── -->
+<header class="navbar">
+  <div class="logo"><img src="images/logoBlack.png" alt="Workify Logo"></div>
+  <p class="logoh1">WorkiFy</p>
+  <nav class="nav-links">
+    <div class="dropdown">
+      <button class="dropbtn">Services ▾</button>
+      <div class="dropdown-content">
+        <a href="booking.html?cat=assembly">Assembly</a>
+        <a href="booking.html?cat=cleaning">Cleaning</a>
+        <a href="booking.html?cat=moving">Moving</a>
+        <a href="booking.html?cat=mounting">Mounting</a>
+        <a href="booking.html?cat=Outdoor Help">Outdoor Help</a>
+        <a href="booking.html?cat=Home Repairs">Home Repairs</a>
+        <a href="booking.html?cat=painting">Painting</a>
+      </div>
+    </div>
+    <a href="login.html">Sign Up / Log In</a>
+    <a href="about.html">About Us</a>
+    <a href="help.html">Help</a>
+    <button class="contact-button" onclick="openContact()">Contact Us</button>
+  </nav>
+</header>
+
+<!-- ── Hero Banner ── -->
+<section class="hero-banner" id="heroBanner"></section>
+
+<!-- ── Search ── -->
+<section class="hero-section">
+  <div class="hero-content">
+    <h1>Your shortcut to getting things done.</h1>
+    <p>WorkiFy makes it simple to find and book help for any task on your to-do list.</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="What do you need help with?">
+      <button class="search-btn" onclick="doSearch()">🔍</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Category Icons ── -->
+<section class="category-icons">
+  <div class="icon-group">
+    <div class="icon-item" data-category="assembly"><span class="icon">🔧</span><p>Assembly</p></div>
+    <div class="icon-item" data-category="cleaning"><span class="icon">🧼</span><p>Cleaning</p></div>
+    <div class="icon-item" data-category="moving"><span class="icon">🚚</span><p>Moving</p></div>
+    <div class="icon-item" data-category="mounting"><span class="icon">🖼️</span><p>Mounting</p></div>
+    <div class="icon-item" data-category="Outdoor Help"><span class="icon">🌿</span><p>Outdoor Help</p></div>
+    <div class="icon-item" data-category="Home Repairs"><span class="icon">🪛</span><p>Home Repairs</p></div>
+    <div class="icon-item" data-category="painting"><span class="icon">🎨</span><p>Painting</p></div>
+  </div>
+
+  <nav class="sub-categories" data-for="assembly">
+    <button class="sub-category-button">General Furniture Assembly</button>
+    <button class="sub-category-button">Bookshelf Assembly</button>
+    <button class="sub-category-button">Desk Assembly</button>
+  </nav>
+  <nav class="sub-categories" data-for="cleaning">
+    <button class="sub-category-button">Home Cleaning</button>
+    <button class="sub-category-button">Apartment Cleaning</button>
+    <button class="sub-category-button">Deep Clean</button>
+    <button class="sub-category-button">Garage Cleaning</button>
+  </nav>
+  <nav class="sub-categories" data-for="moving">
+    <button class="sub-category-button">Home Moving</button>
+    <button class="sub-category-button">Office Moving</button>
+    <button class="sub-category-button">Packing Help</button>
+    <button class="sub-category-button">Heavy Lifting</button>
+  </nav>
+  <nav class="sub-categories" data-for="mounting">
+    <button class="sub-category-button">Hang Art, Mirror & Decor</button>
+    <button class="sub-category-button">TV Mounting</button>
+    <button class="sub-category-button">Mount & Anchor Furniture</button>
+  </nav>
+  <nav class="sub-categories" data-for="Outdoor Help">
+    <button class="sub-category-button">Yard Work</button>
+    <button class="sub-category-button">Leaf Raking & Removal</button>
+    <button class="sub-category-button">Landscaping</button>
+  </nav>
+  <nav class="sub-categories" data-for="Home Repairs">
+    <button class="sub-category-button">Flooring & Tiling Help</button>
+    <button class="sub-category-button">Sealing & Caulking</button>
+    <button class="sub-category-button">Electrical Help</button>
+    <button class="sub-category-button">Plumbing Help</button>
+  </nav>
+  <nav class="sub-categories" data-for="painting">
+    <button class="sub-category-button">Indoor Painting</button>
+    <button class="sub-category-button">Wallpapering</button>
+    <button class="sub-category-button">Outdoor Painting</button>
+  </nav>
+</section>
+
+<!-- ── Stats ── -->
+<section class="stats-section">
+  <div class="stat-item"><p class="description">Furniture Assemblies</p><p class="number">1 million+</p></div>
+  <div class="stat-item"><p class="description">Homes Cleaned</p><p class="number">99,000+</p></div>
+  <div class="stat-item"><p class="description">Moving Tasks</p><p class="number">1.4 million+</p></div>
+  <div class="stat-item"><p class="description">Painting Jobs</p><p class="number">75,000+</p></div>
+</section>
+
+<!-- ── Popular Projects ── -->
+<section class="popular-projects">
+  <h2>Popular Projects</h2>
+  <div class="project-grid">
+    <div class="project-card">
+      <img src="images/furniture3.JPG" alt="Furniture Assembly">
+      <h3>Furniture Assembly</h3>
+      <p>Projects starting at Rs.300</p>
+    </div>
+    <div class="project-card">
+      <img src="images/electrinic.jpg" alt="Electronic">
+      <h3>Electronic Help</h3>
+      <p>Projects starting at Rs.400</p>
+    </div>
+    <div class="project-card">
+      <img src="images/painter02.jpg" alt="Painting">
+      <h3>Painting</h3>
+      <p>Projects starting at Rs.300</p>
+    </div>
+    <div class="project-card">
+      <img src="images/homeWorker.jpg" alt="Cleaning">
+      <h3>Home & Apartment Clean</h3>
+      <p>Projects starting at Rs.350</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── How It Works ── -->
+<section class="how-it-works">
+  <div class="how-container">
+    <div class="how-text">
+      <h2>How It Works</h2>
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content"><h3>Book Your Service</h3><p>Choose the service you need and book a skilled professional within minutes.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content"><h3>Schedule Conveniently</h3><p>Pick a time that works best for you — our professionals are flexible and ready.</p></div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content"><h3>Relax While We Work</h3><p>Enjoy peace of mind while our verified experts take care of everything quickly.</p></div>
+      </div>
+    </div>
+    <div class="how-image">
+      <img src="images/cleanerGirl2rem.png" alt="Cleaner working">
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact Modal ── -->
+<div id="contactModal" class="contact-form">
+  <div class="contact-form-inner">
+    <h1>Contact Us</h1>
+    <label>Name</label>
+    <input type="text" id="cName" placeholder="Your name">
+    <label>Email</label>
+    <input type="email" id="cEmail" placeholder="Your email">
+    <label>Message</label>
+    <textarea id="cMessage" rows="4" placeholder="Your message"></textarea>
+    <div class="contact-form-btns">
+      <button class="contact-button" onclick="submitContact()">Send</button>
+      <button class="contact-button" style="background:#888" onclick="closeContact()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div id="toast" class="toast"></div>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h2>Follow us</h2>
+      <div class="social-links">
+        <a href="#">Facebook</a>
+        <a href="#">Twitter</a>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h2>Discover</h2>
+      <ul><li><a href="help.html">Help</a></li></ul>
+    </div>
+    <div class="footer-section">
+      <h2>Company</h2>
+      <ul><li><a href="about.html">About Us</a></li></ul>
+    </div>
+    <div class="footer-section">
+      <h2>Terms & Privacy</h2>
+      <ul><li><a href="legal.html">Legal</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 WorkiFy. All Rights Reserved.</p></div>
+</footer>
+
+<!-- ── Scripts ── -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script>
+// ── Hero banner rotation ──
+const bannerImgs = ['images/painterGrp.JPG','images/painter2.JPG','images/furniture4.JPG'];
+let bannerIdx = 0;
+const banner = document.getElementById('heroBanner');
+function rotateBanner() {
+  banner.style.backgroundImage = `linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)), url(${bannerImgs[bannerIdx]})`;
+  bannerIdx = (bannerIdx + 1) % bannerImgs.length;
+}
+rotateBanner();
+setInterval(rotateBanner, 3000);
+
+// ── Category icons ──
+document.querySelectorAll('.icon-item').forEach(icon => {
+  icon.addEventListener('click', () => {
+    const cat = icon.dataset.category;
+    document.querySelectorAll('.sub-categories').forEach(m => {
+      m.getAttribute('data-for') === cat ? m.classList.toggle('show') : m.classList.remove('show');
+    });
+  });
+});
+
+// Sub-category → booking page
+document.querySelectorAll('.sub-category-button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const sub = encodeURIComponent(btn.textContent.trim());
+    const cat = encodeURIComponent(btn.closest('nav').dataset.for);
+    window.location.href = `booking.html?cat=${cat}&sub=${sub}`;
+  });
+});
+
+// ── Search ──
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (q) window.location.href = `search.html?q=${encodeURIComponent(q)}`;
+}
+document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+
+// ── Contact form ──
+function openContact()  { document.getElementById('contactModal').classList.add('open'); }
+function closeContact() { document.getElementById('contactModal').classList.remove('open'); }
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+async function submitContact() {
+  const name    = document.getElementById('cName').value.trim();
+  const email   = document.getElementById('cEmail').value.trim();
+  const message = document.getElementById('cMessage').value.trim();
+  if (!name || !email || !message) { showToast('Please fill all fields', 'error'); return; }
+
+  const { error } = await supabase.from('user_messages').insert([{ name, email, message }]);
+  if (error) { showToast('Failed to send. Try again.', 'error'); return; }
+  showToast('Message sent successfully! ✅');
+  closeContact();
+  document.getElementById('cName').value = '';
+  document.getElementById('cEmail').value = '';
+  document.getElementById('cMessage').value = '';
+}
+</script>
+</body>
+</html>

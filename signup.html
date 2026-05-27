@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkiFy | Sign Up</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo"><img src="images/logoBlack.png" alt="Workify Logo"></div>
+  <p class="logoh1">WorkiFy</p>
+  <nav class="nav-links">
+    <a href="index.html"><button class="tasker-btn">Home</button></a>
+    <a href="login.html">Log In</a>
+  </nav>
+</header>
+
+<div class="auth-container">
+  <div class="auth-box">
+    <img src="images/logoBlack.png" alt="Workify Logo">
+    <h2>Sign Up</h2>
+
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
+    </div>
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Choose a username">
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Create a password" oninput="checkPassword()">
+      <div id="passwordFeedback" class="password-feedback"></div>
+    </div>
+
+    <button class="btn primary-btn" onclick="doSignup()">Sign Up</button>
+    <p class="switch-text">Already have an account? <a href="login.html">Log In</a></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script>
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function checkPassword() {
+  const val = document.getElementById('password').value;
+  const fb  = document.getElementById('passwordFeedback');
+  const inp = document.getElementById('password');
+  const ok  = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(val);
+  if (!val) { inp.className = ''; fb.textContent = ''; return; }
+  if (ok) {
+    inp.classList.add('valid-border'); inp.classList.remove('invalid-border');
+    fb.textContent = '✅ Strong password'; fb.className = 'password-feedback valid';
+  } else {
+    inp.classList.add('invalid-border'); inp.classList.remove('valid-border');
+    fb.textContent = '⚠️ Use 8+ chars with upper, lower, number & symbol';
+    fb.className = 'password-feedback invalid';
+  }
+}
+
+async function doSignup() {
+  const email    = document.getElementById('email').value.trim();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+
+  if (!email || !username || !password) { showToast('Please fill all fields.', 'error'); return; }
+  const ok = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password);
+  if (!ok) { showToast('Please use a stronger password.', 'error'); return; }
+
+  // Create auth user (Supabase handles password hashing)
+  const { data, error } = await supabase.auth.signUp({
+    email, password,
+    options: { data: { username } }
+  });
+
+  if (error) { showToast('Signup failed: ' + error.message, 'error'); return; }
+
+  // Also store username in public profiles table
+  if (data.user) {
+    await supabase.from('users').insert([{ id: data.user.id, email, username }]);
+  }
+
+  showToast('Registration successful! Please check your email to confirm. ✅');
+  setTimeout(() => window.location.href = 'login.html', 2500);
+}
+</script>
+</body>
+</html>

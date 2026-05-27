@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkiFy | Search Results</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo"><img src="images/logoBlack.png" alt="Workify Logo"></div>
+  <p class="logoh1">WorkiFy</p>
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="login.html">Sign Up / Log In</a>
+    <a href="about.html">About Us</a>
+  </nav>
+</header>
+
+<div class="search-results-wrap">
+  <div class="search-results">
+    <h1 id="resultsTitle">Searching…</h1>
+    <ul id="resultList" class="result-list"></ul>
+    <p id="noResults" class="no-results" style="display:none;"></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script>
+// All services defined locally (replaces DB lookup for static hosting)
+const allServices = [
+  { main_category:'assembly',     sub_service:'General Furniture Assembly' },
+  { main_category:'assembly',     sub_service:'Bookshelf Assembly' },
+  { main_category:'assembly',     sub_service:'Desk Assembly' },
+  { main_category:'cleaning',     sub_service:'Home Cleaning' },
+  { main_category:'cleaning',     sub_service:'Apartment Cleaning' },
+  { main_category:'cleaning',     sub_service:'Deep Clean' },
+  { main_category:'cleaning',     sub_service:'Garage Cleaning' },
+  { main_category:'moving',       sub_service:'Home Moving' },
+  { main_category:'moving',       sub_service:'Office Moving' },
+  { main_category:'moving',       sub_service:'Packing Help' },
+  { main_category:'moving',       sub_service:'Heavy Lifting' },
+  { main_category:'mounting',     sub_service:'Hang Art, Mirror & Decor' },
+  { main_category:'mounting',     sub_service:'TV Mounting' },
+  { main_category:'mounting',     sub_service:'Mount & Anchor Furniture' },
+  { main_category:'Outdoor Help', sub_service:'Yard Work' },
+  { main_category:'Outdoor Help', sub_service:'Leaf Raking & Removal' },
+  { main_category:'Outdoor Help', sub_service:'Landscaping' },
+  { main_category:'Home Repairs', sub_service:'Flooring & Tiling Help' },
+  { main_category:'Home Repairs', sub_service:'Sealing & Caulking' },
+  { main_category:'Home Repairs', sub_service:'Electrical Help' },
+  { main_category:'Home Repairs', sub_service:'Plumbing Help' },
+  { main_category:'painting',     sub_service:'Indoor Painting' },
+  { main_category:'painting',     sub_service:'Wallpapering' },
+  { main_category:'painting',     sub_service:'Outdoor Painting' },
+];
+
+const q = new URLSearchParams(window.location.search).get('q') || '';
+document.getElementById('resultsTitle').textContent = `Search Results for "${q}"`;
+
+const filtered = allServices.filter(s =>
+  s.main_category.toLowerCase().includes(q.toLowerCase()) ||
+  s.sub_service.toLowerCase().includes(q.toLowerCase())
+);
+
+const list = document.getElementById('resultList');
+const none = document.getElementById('noResults');
+
+if (filtered.length === 0) {
+  none.textContent = `No services found for "${q}"`;
+  none.style.display = 'block';
+} else {
+  filtered.forEach(s => {
+    const li = document.createElement('li');
+    const a  = document.createElement('a');
+    a.href = `booking.html?cat=${encodeURIComponent(s.main_category)}&sub=${encodeURIComponent(s.sub_service)}`;
+    a.innerHTML = `<strong>${s.main_category}</strong> — ${s.sub_service}`;
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+}
+</script>
+</body>
+</html>

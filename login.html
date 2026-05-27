@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkiFy | Login</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo"><img src="images/logoBlack.png" alt="Workify Logo"></div>
+  <p class="logoh1">WorkiFy</p>
+  <nav class="nav-links">
+    <a href="index.html"><button class="tasker-btn">Home</button></a>
+    <a href="signup.html">Sign Up</a>
+  </nav>
+</header>
+
+<div class="auth-container">
+  <div class="auth-box">
+    <img src="images/logoBlack.png" alt="Workify Logo">
+    <h2>Login</h2>
+
+    <div class="input-group">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter your email">
+    </div>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter your password">
+    </div>
+
+    <button class="btn primary-btn" onclick="doLogin()">Login</button>
+    <p class="switch-text">Don't have an account? <a href="signup.html">Sign Up</a></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script>
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+async function doLogin() {
+  const email    = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  if (!email || !password) { showToast('Please fill all fields.', 'error'); return; }
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) { showToast('Login failed: ' + error.message, 'error'); return; }
+  showToast('Login successful! ✅');
+  setTimeout(() => window.location.href = 'offer.html', 1200);
+}
+</script>
+</body>
+</html>

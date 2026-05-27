@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkiFy | Admin Panel</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: #f0f4f8; }
+    .admin-header { background: #1e1e2f; color: #fff; padding: 22px 36px; display:flex; align-items:center; justify-content:space-between; }
+    .admin-header h1 { font-size: 1.5rem; color: #00bcd4; }
+    .admin-header p  { font-size: .9rem; color: #aaa; }
+    .admin-wrap { max-width: 1300px; margin: 36px auto; padding: 0 20px; }
+    .admin-login { max-width: 380px; margin: 80px auto; background: #fff; padding: 40px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,.1); text-align:center; }
+    .admin-login h2 { margin-bottom: 22px; color: #1e1e2f; }
+    .admin-login input { width:100%; padding:11px 14px; border:1.5px solid #ddd; border-radius:8px; font-size:.95rem; font-family:inherit; margin-bottom:14px; outline:none; }
+    .admin-login input:focus { border-color:#00bcd4; }
+  </style>
+</head>
+<body>
+
+<!-- Admin login gate -->
+<div id="loginGate" style="display:none;">
+  <div class="admin-login">
+    <h2>Admin Login</h2>
+    <input type="email" id="aEmail" placeholder="Admin email">
+    <input type="password" id="aPass" placeholder="Password">
+    <button class="tasker-btn" style="width:100%" onclick="adminLogin()">Login</button>
+    <p id="loginErr" style="color:#e53935;font-size:.85rem;margin-top:10px;"></p>
+  </div>
+</div>
+
+<!-- Admin dashboard -->
+<div id="dashboard" style="display:none;">
+  <div class="admin-header">
+    <div><h1>WorkiFy Admin Panel</h1><p id="adminEmail"></p></div>
+    <button class="contact-button" style="background:#e53935" onclick="adminLogout()">Log Out</button>
+  </div>
+
+  <div class="admin-wrap">
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="showTab('bookings',this)">📋 Bookings</button>
+      <button class="tab-btn" onclick="showTab('users',this)">👥 Users</button>
+      <button class="tab-btn" onclick="showTab('messages',this)">💬 Messages</button>
+    </div>
+
+    <!-- Bookings -->
+    <div id="tab-bookings">
+      <div class="admin-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th><th>Address</th><th>Category</th>
+              <th>Sub Service</th><th>Hours</th><th>Workers</th>
+              <th>Date</th><th>Phone</th><th>Offer</th><th>Total (Rs.)</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody"><tr><td colspan="12" style="text-align:center;padding:20px;">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Users -->
+    <div id="tab-users" style="display:none;">
+      <div class="admin-table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Username</th><th>Email</th><th>Created</th><th>Action</th></tr></thead>
+          <tbody id="usersBody"><tr><td colspan="5" style="text-align:center;padding:20px;">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div id="tab-messages" style="display:none;">
+      <div class="admin-table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Message</th><th>Action</th></tr></thead>
+          <tbody id="messagesBody"><tr><td colspan="5" style="text-align:center;padding:20px;">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script>
+// ── IMPORTANT: set your admin email here ──
+const ADMIN_EMAIL = 'admin@workify.com';
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+(async () => {
+  const { data:{ user } } = await supabase.auth.getUser();
+  if (user && user.email === ADMIN_EMAIL) {
+    showDashboard(user);
+  } else {
+    document.getElementById('loginGate').style.display = 'block';
+  }
+})();
+
+async function adminLogin() {
+  const email = document.getElementById('aEmail').value.trim();
+  const pass  = document.getElementById('aPass').value;
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+  if (error || data.user.email !== ADMIN_EMAIL) {
+    document.getElementById('loginErr').textContent = 'Access denied or invalid credentials.';
+    return;
+  }
+  document.getElementById('loginGate').style.display = 'none';
+  showDashboard(data.user);
+}
+
+function showDashboard(user) {
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('adminEmail').textContent = user.email;
+  loadBookings(); loadUsers(); loadMessages();
+}
+
+async function adminLogout() {
+  await supabase.auth.signOut();
+  location.reload();
+}
+
+function showTab(name, btn) {
+  ['bookings','users','messages'].forEach(t => {
+    document.getElementById(`tab-${t}`).style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── Bookings ──
+async function loadBookings() {
+  const { data, error } = await supabase.from('bookings').select('*').order('id', { ascending: false });
+  const tbody = document.getElementById('bookingsBody');
+  if (error || !data.length) { tbody.innerHTML = '<tr><td colspan="12" style="text-align:center">No bookings yet.</td></tr>'; return; }
+  tbody.innerHTML = data.map((r,i) => `
+    <tr>
+      <td>${i+1}</td><td>${r.name}</td><td>${r.address}</td>
+      <td>${r.main_category}</td><td>${r.sub_service}</td>
+      <td>${r.hours}</td><td>${r.workers}</td><td>${r.date}</td>
+      <td>${r.phone}</td><td>${r.offer_code||'—'}</td><td>${r.total_price||'—'}</td>
+      <td><button class="del-btn" onclick="deleteRow('bookings',${r.id},'loadBookings')">Delete</button></td>
+    </tr>`).join('');
+}
+
+// ── Users ──
+async function loadUsers() {
+  const { data, error } = await supabase.from('users').select('*').order('id', { ascending: false });
+  const tbody = document.getElementById('usersBody');
+  if (error || !data.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No users yet.</td></tr>'; return; }
+  tbody.innerHTML = data.map((r,i) => `
+    <tr>
+      <td>${i+1}</td><td>${r.username}</td><td>${r.email}</td>
+      <td>${r.created_at ? r.created_at.split('T')[0] : '—'}</td>
+      <td><button class="del-btn" onclick="deleteRow('users','${r.id}','loadUsers')">Delete</button></td>
+    </tr>`).join('');
+}
+
+// ── Messages ──
+async function loadMessages() {
+  const { data, error } = await supabase.from('user_messages').select('*').order('id', { ascending: false });
+  const tbody = document.getElementById('messagesBody');
+  if (error || !data.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">No messages yet.</td></tr>'; return; }
+  tbody.innerHTML = data.map((r,i) => `
+    <tr>
+      <td>${i+1}</td><td>${r.name}</td><td>${r.email}</td>
+      <td style="max-width:320px">${r.message}</td>
+      <td><button class="del-btn" onclick="deleteRow('user_messages',${r.id},'loadMessages')">Delete</button></td>
+    </tr>`).join('');
+}
+
+async function deleteRow(table, id, reloadFn) {
+  if (!confirm('Delete this record?')) return;
+  const { error } = await supabase.from(table).delete().eq('id', id);
+  if (error) { showToast('Delete failed.', 'error'); return; }
+  showToast('Deleted successfully.');
+  window[reloadFn]();
+}
+</script>
+</body>
+</html>
